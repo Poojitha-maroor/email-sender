@@ -1,19 +1,30 @@
-import smtplib as s
+import smtplib
 
-ob=s.SMTP("smtp.gmail.com",587)
-ob.starttls()
+def send_email(subject,msg):
+    try:
+        server=smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        server.login(EMAIL_ADDRESS,PASSWORD)
+        message= 'Subject:{}\n\n{}'.format(subject,msg)
+        server.sendmail(EMAIL_ADDRESS,listofaddress,message)
+        server.quit()
+        print("Success:Email Sent!")
+    except:
+        print("Email failed to send")
 
-ob.login("", "")
+EMAIL_ADDRESS="snp.project234@gmail.com"
+PASSWORD="snpproject@123"
 
-print("Enter the Subject ")
+
+print("Enter the subject")
 subject=input()
 
-print("Enter the body of your email ")
-body=input()
+print("Enter the message to be sent")
+msg=input()
 
-message="Subject:{}\n\n{}".format(subject,body)
+print("Enter the recipient adressess")
+listofaddress=list(map(str,input().split()))
 
-print("Give the mail id to be sent")
-listofaddress=[input()]
 
-ob.sendmail("",listofaddress,message)
+send_email(subject,msg)
